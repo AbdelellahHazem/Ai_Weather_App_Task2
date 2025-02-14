@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861214877995",
+    "project_id": "weather-ai-c7d98",
+    "storage_bucket": "weather-ai-c7d98.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861214877995:android:3710892e58e9c117eebd6e",
+        "android_client_info": {
+          "package_name": "com.example.weather_ai_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiSQSHieQ0A6Gk-vt_wRpBXu6_NO0hoNo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
