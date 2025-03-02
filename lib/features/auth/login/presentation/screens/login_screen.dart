@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../weather/presentation/screens/weather_screen.dart';
 import '../../../register/presentation/screens/register_screen.dart';
+// Import WeatherScreen
+import '../../../register/presentation/screens/screen.dart';
 import '../cubit/login_cubit.dart';
 import '../cubit/login_state.dart';
-
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -38,8 +40,12 @@ class LoginScreen extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Login Successful!')),
                       );
-                      // Navigate to another screen (example: HomeScreen)
-                      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+                      // Navigate to WeatherScreen and remove LoginScreen from stack
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => WeatherScreen()),
+                      );
                     } else if (state is LoginFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text(state.error)),

@@ -17,6 +17,7 @@ class RegisterRemoteDataSource {
       'name': name,
       'email': email,
       'phone': phone,
+      'password':password
     });
 
     return result.user;
