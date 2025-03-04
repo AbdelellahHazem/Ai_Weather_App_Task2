@@ -81,4 +81,6 @@ class WeatherCubit extends Cubit<WeatherState> {
       emit(TennisPredictionError(message: "Failed to get prediction: ${e.toString()}"));
     }
   }
+
+
 }
