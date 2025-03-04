@@ -1,16 +1,41 @@
 import '../../domain/entities/weather.dart';
 
+class WeatherModel {
+  final String cityName;
+  final String outlook;
+  final String temperature;
+  final String humidity;
+
+  WeatherModel({
+    required this.cityName,
+    required this.outlook,
+    required this.temperature,
+    required this.humidity,
+  });
+
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    return WeatherModel(
+      cityName: json['location']['name'],
+      outlook: json['current']['condition']['text'].toLowerCase().contains("rain") ? "rainy" : "sunny",
+      temperature: (json['current']['temp_c'] as num).toDouble() > 25 ? "hot" : "mild",
+      humidity: (json['current']['humidity'] as num).toDouble() < 60 ? "normal" : "high",
+    );
+  }
+}
 
 class WeatherForecastModel extends WeatherForecast {
+  final WeatherModel currentWeather;
+
   WeatherForecastModel({
-    required String city,
+    required String cityName,
     required String country,
     required double temperature,
     required String condition,
     required String icon,
     required List<WeatherDay> forecastDays,
+    required this.currentWeather,
   }) : super(
-    city: city,
+    cityName: cityName,
     country: country,
     temperature: temperature,
     condition: condition,
@@ -20,27 +45,15 @@ class WeatherForecastModel extends WeatherForecast {
 
   factory WeatherForecastModel.fromJson(Map<String, dynamic> json) {
     return WeatherForecastModel(
-      city: json['location']['name'],
+      cityName: json['location']['name'],
       country: json['location']['country'],
-      temperature: json['current']['temp_c'].toDouble(),
+      temperature: (json['current']['temp_c'] as num).toDouble(),
       condition: json['current']['condition']['text'],
-      icon: json['current']['condition']['icon'],
+      icon: "https:${json['current']['condition']['icon']}",
       forecastDays: (json['forecast']['forecastday'] as List)
-          .map((day) => WeatherDay(
-        date: day['date'],
-        maxTemp: day['day']['maxtemp_c'].toDouble(),
-        minTemp: day['day']['mintemp_c'].toDouble(),
-        condition: day['day']['condition']['text'],
-        icon: day['day']['condition']['icon'],
-        hourlyForecast: (day['hour'] as List)
-            .map((hour) => WeatherHour(
-          time: hour['time'],
-          temp: hour['temp_c'].toDouble(),
-          icon: hour['condition']['icon'],
-        ))
-            .toList(),
-      ))
+          .map((day) => WeatherDay.fromJson(day))
           .toList(),
+      currentWeather: WeatherModel.fromJson(json),
     );
   }
 }

@@ -57,17 +57,11 @@ class DioHelper{
   }
 
 
-  static Future <Response> post({required String endpoint,String ?token,Map<String,dynamic> ?body,FormData ? formdata ,Map<String,dynamic> ?params}) async {
-    try{
-      dio?.options.headers={
-        "Authorization": "Bearer $token",
-      };
-      Response? response  = await dio ?.post(endpoint,data:body??formdata ,queryParameters:params  );
-      return response!;
-    }catch(e){
-      rethrow;
-    }
-
+  static Future<Response?> postData({
+    required String url,
+    required Map<String, dynamic> data,
+  }) async {
+    return await dio?.post(url, data: data);
   }
 
 

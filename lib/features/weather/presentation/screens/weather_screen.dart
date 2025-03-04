@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_ai_app/features/weather/presentation/screens/weather_predict_screen.dart';
 import '../../domain/entities/weather.dart';
 import '../bloc/weather_cubit.dart';
+
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -18,7 +20,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Get device width and height for responsiveness
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -29,7 +30,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           currentCity,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.05, // Responsive font size
+            fontSize: screenWidth * 0.05,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -60,7 +61,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 _searchController.clear();
               },
             ),
-            SizedBox(height: screenHeight * 0.02), // Responsive spacing
+            SizedBox(height: screenHeight * 0.02),
 
             // 🌤 Weather Data Display
             Expanded(
@@ -72,14 +73,39 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     return _buildWeatherContent(state.weather, screenWidth, screenHeight);
                   } else if (state is WeatherError) {
                     return Center(
-                        child: Text(
-                          state.message,
-                          style: const TextStyle(color: Colors.white),
-                        ));
+                      child: Text(
+                        state.message,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
                   }
                   return const Center(
-                      child: Text("Search for a city to get weather data.", style: TextStyle(color: Colors.white)));
+                    child: Text(
+                      "Search for a city to get weather data.",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
                 },
+              ),
+            ),
+
+            // ➡️ Navigate to Prediction Screen Button
+            SizedBox(height: screenHeight * 0.02),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const WeatherPredictionScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: screenHeight * 0.02),
+                backgroundColor: Colors.lightBlueAccent,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              child: Text(
+                "Go to Tennis Prediction 🎾",
+                style: TextStyle(fontSize: screenWidth * 0.045, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -103,7 +129,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               children: [
                 Image.network(
                   "https:${weather.icon}",
-                  width: screenWidth * 0.25, // Responsive width
+                  width: screenWidth * 0.25,
                   errorBuilder: (context, error, stackTrace) => const Icon(Icons.cloud_off, size: 60, color: Colors.white),
                 ),
                 SizedBox(height: screenHeight * 0.01),

@@ -1,5 +1,5 @@
 class WeatherForecast {
-  final String city;
+  final String cityName;
   final String country;
   final double temperature;
   final String condition;
@@ -7,7 +7,7 @@ class WeatherForecast {
   final List<WeatherDay> forecastDays;
 
   WeatherForecast({
-    required this.city,
+    required this.cityName,
     required this.country,
     required this.temperature,
     required this.condition,
@@ -32,6 +32,19 @@ class WeatherDay {
     required this.icon,
     required this.hourlyForecast,
   });
+
+  factory WeatherDay.fromJson(Map<String, dynamic> json) {
+    return WeatherDay(
+      date: json['date'],
+      maxTemp: (json['day']['maxtemp_c'] as num).toDouble(),
+      minTemp: (json['day']['mintemp_c'] as num).toDouble(),
+      condition: json['day']['condition']['text'],
+      icon: "https:${json['day']['condition']['icon']}",
+      hourlyForecast: (json['hour'] as List)
+          .map((hour) => WeatherHour.fromJson(hour))
+          .toList(),
+    );
+  }
 }
 
 class WeatherHour {
@@ -44,4 +57,12 @@ class WeatherHour {
     required this.temp,
     required this.icon,
   });
+
+  factory WeatherHour.fromJson(Map<String, dynamic> json) {
+    return WeatherHour(
+      time: json['time'],
+      temp: (json['temp_c'] as num).toDouble(),
+      icon: "https:${json['condition']['icon']}",
+    );
+  }
 }
